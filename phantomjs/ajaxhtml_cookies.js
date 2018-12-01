@@ -6,7 +6,7 @@ var url = address;
 
 var flag = phantom.addCookie({
   'name'     : 'sessionid',
-  'value'    : '',//在这里写你自己的cookie值
+  'value'    : '换成你自己的value',
   'domain'   : '.bcy.net',
   'path'     : '/',
   'httponly' : false,
@@ -16,11 +16,17 @@ var flag = phantom.addCookie({
 console.log(flag);
 
 if(flag) {
-	page.open(url, function (status) { 
-		window.setTimeout(function () {
-			console.log(page.content);
+	page.open(url, function (status) {
+		console.log("Status: " + status);
+		if (status === 'success') {
+			window.setTimeout(function () {
+				console.log(page.content);
+				phantom.exit();
+			}, 5000);
+		} else {
+			console.log('Failed to post!');
 			phantom.exit();
-		}, 5000);
+		}
 	});
 } else {
 	console.log("cookies error")

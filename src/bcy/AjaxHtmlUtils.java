@@ -218,6 +218,7 @@ public class AjaxHtmlUtils {
 		
 		Map<String, Object> map;
 		boolean flag;
+		boolean upgrade = false;// 是否出现更新
 		ArrayList<String> list;
 		//note
 		map = compareAlbums(artist.getNotes(), localArtist.getNotes());
@@ -226,6 +227,7 @@ public class AjaxHtmlUtils {
 			list = (ArrayList<String>) map.get("all");
 			artist.setNotes(list);
 			System.out.println("以上更新类型为：note图片");
+			if(!upgrade) upgrade = true;
 		}
 		list = (ArrayList<String>) map.get("task");
 		task.setNotes(list);
@@ -236,6 +238,7 @@ public class AjaxHtmlUtils {
 			list = (ArrayList<String>) map.get("all");
 			artist.setArticles(list);
 			System.out.println("以上更新类型为：article文字");
+			if(!upgrade) upgrade = true;
 		}
 		list = (ArrayList<String>) map.get("task");
 		task.setArticles(list);
@@ -246,6 +249,7 @@ public class AjaxHtmlUtils {
 			list = (ArrayList<String>) map.get("all");
 			artist.setGanswers(list);
 			System.out.println("以上更新类型为：ganswer问答");
+			if(!upgrade) upgrade = true;
 		}
 		list = (ArrayList<String>) map.get("task");
 		task.setGanswers(list);
@@ -256,6 +260,7 @@ public class AjaxHtmlUtils {
 			list = (ArrayList<String>) map.get("all");
 			artist.setVideos(list);
 			System.out.println("以上更新类型为：video视频");
+			if(!upgrade) upgrade = true;
 		}
 		list = (ArrayList<String>) map.get("task");
 		task.setVideos(list);
@@ -266,13 +271,15 @@ public class AjaxHtmlUtils {
 			list = (ArrayList<String>) map.get("all");
 			artist.setSets(list);
 			System.out.println("以上更新类型为：set连载");
+			if(!upgrade) upgrade = true;
 		}
 		list = (ArrayList<String>) map.get("task");
 		task.setSets(list);
 		
-
-		FileUtils.writeArtistToFile(artist, localfilePath);
-		FileUtils.writeStringToFile(artist.toString(), txtPath);
+		if(upgrade) {
+			FileUtils.writeArtistToFile(artist, localfilePath);
+			FileUtils.writeStringToFile(artist.toString(), txtPath);
+		}
 		return task;
 	}
 	private Map<String, Object> compareAlbums(ArrayList<String> currentAlbums, ArrayList<String> localAlbums) {
@@ -329,7 +336,9 @@ public class AjaxHtmlUtils {
 		}
 		
 		AlbumDownloader albumDownloader = new AlbumDownloader(phantom, codejs, path);
-		albumDownloader.downloadImg(artist.getHeadImgUrl(), path);//下载作者头像
+		if(artist.getHeadImgUrl() != null) {
+			albumDownloader.downloadImg(artist.getHeadImgUrl(), path);//下载作者头像
+		}
 		ArrayList<String> albumsUrls = artist.getNotes();
 		for(int i = 0; i < albumsUrls.size(); i ++) {
 			albumDownloader.downloadNote(albumsUrls.get(i));

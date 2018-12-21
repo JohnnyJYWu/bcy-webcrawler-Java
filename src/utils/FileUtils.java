@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 
 import model.Album;
 import model.Artist;
@@ -20,10 +22,27 @@ import model.Artist;
 
 public class FileUtils {
 	
+	public static void failLog(String content) {
+		String filePath = UrlUtils.savePath + "failLog.log";
+        File file = new File(filePath);
+        FileWriter fw;
+        try { 
+        	fw = new FileWriter(file, true);
+        	PrintWriter pw = new PrintWriter(fw);
+        	pw.println(content);
+        	pw.flush();
+        	pw.close();
+        	fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+	
 	public static void writeStringToFile(String content, String filePath) {
-        try {
-            File file = new File(filePath);
-            FileOutputStream out = new FileOutputStream(file);
+        File file = new File(filePath);
+        FileOutputStream out;
+        try { 
+        	out = new FileOutputStream(file);
             PrintStream ps = new PrintStream(out);
             ps.println(content);
             ps.flush();

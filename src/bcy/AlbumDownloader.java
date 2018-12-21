@@ -220,6 +220,7 @@ public class AlbumDownloader {
             is.close();
             out.close();
         } catch (Exception e) {
+    		FileUtils.failLog(filePath + "//" + fileName);
             e.printStackTrace();
         }
         

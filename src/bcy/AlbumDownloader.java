@@ -245,7 +245,7 @@ public class AlbumDownloader {
 	 * 正则，过滤非法字符（创建文件夹）
 	 */
 	public String stringFilter(String str) {
-		String regEx="[\\:*?\"<>|\\/\\\\]";//windows文件名不允许包含（\/:*?"<>|），使用正则消除
+		String regEx="[\\:*?\"<>|\\/\\\\]";//windows文件名不允许包含（\/:*?"<>|），使用正则消除
 		Pattern p = Pattern.compile(regEx);     
 		Matcher m = p.matcher(str);     
 		return m.replaceAll("").trim();     
